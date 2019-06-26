@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { Container, Paper, Typography, TextField, makeStyles, Box, Grid, Button } from '@material-ui/core';
+import { inject, observer } from 'mobx-react';
+
+import { Container, Paper, Typography, TextField, makeStyles, Grid, Button } from '@material-ui/core';
+
+import { IUserStore, USER_STORE } from '../stores/userStore';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,7 +19,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const SignUpPage: React.FC<RouteComponentProps> = ({ match }) => {
+// TODO on successful request, redirect to login
+// TODO loading state during request
+// TODO display error on failed request
+const SignUpPageImpl: React.FC<RouteComponentProps & { userStore?: IUserStore }> = (props) => {
+  const { userStore } = props;
+  const { signUp } = userStore!;
+
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -63,7 +73,7 @@ export const SignUpPage: React.FC<RouteComponentProps> = ({ match }) => {
         <Button
           fullWidth
           className={classes.button}
-          onClick={() => console.log(email, username)}
+          onClick={() => signUp(email, username, password)}
         >
           sign up
         </Button>
@@ -71,3 +81,5 @@ export const SignUpPage: React.FC<RouteComponentProps> = ({ match }) => {
     </Container>
   );
 }
+
+export const SignUpPage = inject(USER_STORE)(observer(SignUpPageImpl))
