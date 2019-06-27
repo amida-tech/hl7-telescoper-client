@@ -19,17 +19,27 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// TODO on successful request, redirect to login
 // TODO loading state during request
-// TODO display error on failed request
-const SignUpPageImpl: React.FC<RouteComponentProps & { userStore?: IUserStore }> = (props) => {
-  const { userStore } = props;
-  const { signUp } = userStore!;
+const SignUpPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> = (props) => {
+  const { userStore, history } = props;
+  const { signUp } = userStore;
 
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+
+  const signUpAction = async () => {
+    try {
+      setError(false)
+      await signUp(email, username, password)
+      history.push('/app')
+    } catch {
+      setError(true)
+    }
+  }
+
   return (
     <Container maxWidth="sm">
       <Paper className={classes.root}>
@@ -73,10 +83,15 @@ const SignUpPageImpl: React.FC<RouteComponentProps & { userStore?: IUserStore }>
         <Button
           fullWidth
           className={classes.button}
-          onClick={() => signUp(email, username, password)}
+          onClick={signUpAction}
         >
           sign up
         </Button>
+        { error && (
+          <Typography variant="body1">
+            Error. Try Again.
+          </Typography>
+        )}
       </Paper>
     </Container>
   );
