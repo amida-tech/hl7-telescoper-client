@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // TODO config for url
-const baseURL = 'http://localhost:4040/api/users'
+const baseURL = 'http://localhost:4040'
 
 export const telescoperApi = {
   api: axios.create({
