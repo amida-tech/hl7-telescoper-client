@@ -6,6 +6,7 @@ export interface IUserStore {
   isLoggedIn: boolean;
   setUsername(username?: string): void;
   signUp(email: string, username: string, password: string): Promise<void>;
+  login(username: string, password: string): Promise<void>;
 }
 
 export class UserStore implements IUserStore {
@@ -31,6 +32,11 @@ export class UserStore implements IUserStore {
   @action.bound
   async signUp(email: string, username: string, password: string) {
     const { username: resUsername } = await telescoperApi.signUp(email, username, password)
+    this.setUsername(resUsername)
+  }
+  @action.bound
+  async login(username: string, password: string) {
+    const { username: resUsername } = await telescoperApi.login(username, password)
     this.setUsername(resUsername)
   }
 }

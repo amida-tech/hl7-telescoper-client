@@ -4,18 +4,20 @@ import { inject, observer } from 'mobx-react';
 
 import { IUserStore, USER_STORE } from '../stores/userStore';
 import { FilesPage } from './FilesPage';
+import { MessagePage } from './MessagePage';
 
 const AppRootImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> = (props) => {
   const { match, userStore} = props
-  const { isLoggedIn } = userStore
-  if (!isLoggedIn) {
-    return <Redirect to="/auth" />
-  }
+  // const { isLoggedIn } = userStore
+  // if (!isLoggedIn) {
+  //   return <Redirect to="/auth" />
+  // }
   return (
     <Switch>
+      {/* <Route path={`${match.path}/files/upload`} component={FileUploadPage} /> */}
+      <Route path={`${match.path}/files/:fileId/messages/:messageIndex`} component={MessagePage} />
+      <Redirect from={`${match.path}/files/:fileId`} to={`${match.path}/files/:fileId/messages/0`} />
       <Route path={`${match.path}/files`} component={FilesPage} />
-      {/* <Route path={`${match.path}/files/upload`} component={FileUploadPage} />
-      <Route path={`${match.path}/files/:fileId`} component={FilePage} /> */}
       <Redirect to={`${match.path}/files`} />
     </Switch>
   );
