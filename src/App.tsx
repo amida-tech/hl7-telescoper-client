@@ -1,54 +1,48 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, NavLink, Redirect, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
+import { Provider } from 'mobx-react';
 
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
-import deepOrange from '@material-ui/core/colors/deepOrange';
+import { deepOrange, blueGrey } from '@material-ui/core/colors';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
+import { stores } from './stores';
+
+import { AuthRoot } from './views/AuthRoot';
+import { AppRoot } from './views/AppRoot';
 
 import './App.css';
 
 const theme = createMuiTheme({
   palette: {
-    primary: blue,
+    primary: blueGrey,
     secondary: deepOrange,
+  },
+  props: {
+    MuiButtonBase: {
+      disableRipple: true,
+    },
   },
 });
 
-const App: React.FC = () => {
+/*
+ * Here we define and provide root level services including:
+ * * Mobx Store
+ * * Routing
+ * * MUI Theme
+ */
+export const App: React.FC = () => {
   return (
-    <Router>
-      <ThemeProvider theme={theme}>
-        <AppBar position="static">
-          <Toolbar>
-            <NavLink to="/upload">
-              <Button color="inherit">
-                Upload HL7
-              </Button>
-            </NavLink>
-            <NavLink to="/explore">
-              <Button color="inherit">
-                Explore HL7
-              </Button>
-            </NavLink>
-          </Toolbar>
-        </AppBar>
-        <Switch>
-          <Route path="/upload">
-            Uploading
-          </Route>
-          <Route path="/explore">
-            Exploring
-          </Route>
-          <Redirect to="/explore" />
-        </Switch>
-      </ThemeProvider>
-    </Router>
+    <Provider {...stores}>
+      <Router>
+        <ThemeProvider theme={theme}>
+          <Switch>
+            <Route path="/auth" component={AuthRoot} />
+            <Route path="/app" component={AppRoot} />
+            <Redirect to="/app" />
+          </Switch>
+        </ThemeProvider>
+      </Router>
+    </Provider>
   );
 }
-
-export default App;
