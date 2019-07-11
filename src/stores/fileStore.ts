@@ -3,7 +3,9 @@ import { telescoperApi } from '../services/api';
 import { HL7File } from '../types';
 
 export interface IFileStore {
-  files: HL7File[]
+  files: HL7File[];
+  setFiles(files: HL7File[]): void;
+  getFiles(): Promise<void>;
 }
 
 export class FileStore implements IFileStore {
@@ -24,9 +26,14 @@ export class FileStore implements IFileStore {
   ]
 
   @action.bound
+  setFiles(files: HL7File[]) {
+    this.files = files
+  }
+
+  @action.bound
   async getFiles() {
     const files = await telescoperApi.getFiles()
-    runInAction(() => this.files = files)
+    this.setFiles(files)
   }
 }
 

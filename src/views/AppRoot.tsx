@@ -8,10 +8,10 @@ import { MessagePage } from './MessagePage';
 
 const AppRootImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> = (props) => {
   const { match, userStore} = props
-  // const { isLoggedIn } = userStore
-  // if (!isLoggedIn) {
-  //   return <Redirect to="/auth" />
-  // }
+  const { isLoggedIn } = userStore
+  if (!isLoggedIn) {
+    return <Redirect to="/auth" />
+  }
   return (
     <Switch>
       {/* <Route path={`${match.path}/files/upload`} component={FileUploadPage} /> */}

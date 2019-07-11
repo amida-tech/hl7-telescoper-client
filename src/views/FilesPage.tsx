@@ -34,7 +34,7 @@ const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> =
         spacing={2}
       >
         {files.map((f) => (
-          <Grid item>
+          <Grid item key={f.id}>
             <Card>
               <CardContent>
                 <Typography>

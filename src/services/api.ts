@@ -21,7 +21,7 @@ export const telescoperApi = {
     const response = await this.api.post('/api/users/', { email, username, password })
     return response.data
   },
-  async login(username: string, password: string): Promise<{ username: string }> {
+  async login(username: string, password: string): Promise<{ token: string }> {
     const response = await this.api.post('/api/users/signin', { username, password })
     return response.data
   },
