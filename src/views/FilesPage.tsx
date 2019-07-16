@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { Container, Paper, Typography, makeStyles, Grid, Card, CardContent, CardActions, Button } from '@material-ui/core';
+import { Container, Typography, makeStyles, Grid, Card, CardContent, CardActions, Button } from '@material-ui/core';
 import { IFileStore, FILE_STORE } from '../stores/fileStore';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';

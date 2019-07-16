@@ -4666,6 +4666,11 @@ history@^4.9.0:
     tiny-warning "^1.0.0"
     value-equal "^0.4.0"
 
+hl7-dictionary@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/hl7-dictionary/-/hl7-dictionary-1.0.1.tgz#6fd9e9651bb0e4acf1f2f1f8700eb044a0f73167"
+  integrity sha1-b9npZRuw5Kzx8vH4cA6wRKD3MWc=
+
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"

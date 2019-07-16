@@ -1,4 +1,4 @@
-import { observable, action, runInAction } from 'mobx';
+import { observable, action } from 'mobx';
 import { telescoperApi } from '../services/api';
 import { HL7File } from '../types';
 
