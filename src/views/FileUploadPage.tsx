@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Container, Paper, Typography, makeStyles, Grid, TextField, Button } from '@material-ui/core';
-import { IUserStore, USER_STORE } from '../stores/userStore';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
+import { telescoperApi } from '../services/api';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,20 +18,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> = (props) => {
-  const { userStore, history } = props;
-  const { login } = userStore;
+const FileUploadPageImpl: React.FC<RouteComponentProps> = (props) => {
+  const { history } = props;
 
   const classes = useStyles();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
 
-  const signUpAction = async () => {
+  const uploadAction = async (event: ChangeEvent<HTMLInputElement>) => {
     try {
       setError(false)
-      await login(username, password)
-      history.push('/app')
+      await telescoperApi.uploadFile(event.target.files![0])
+      history.push('/app/files')
     } catch {
       setError(true)
     }
@@ -46,7 +42,7 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
           variant="h2"
           className={classes.title}
         >
-          HL7 Telescoper
+         Upload a file
         </Typography>
         <Grid
           container
@@ -55,37 +51,28 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
           spacing={2}
         >
           <Grid item>
-            <TextField
-              label="Username"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
           </Grid>
         </Grid>
         <Button
           fullWidth
           className={classes.button}
-          onClick={signUpAction}
+          component="label"
         >
-          sign in
+          choose and upload file
+          <input
+            type="file"
+            style={{ display: "none" }}
+            onChange={(event) => uploadAction(event)}
+          />
         </Button>
         { error && (
           <Typography variant="body1">
             Error. Try Again.
           </Typography>
         )}
-        <Link to="/auth/signup">Register here</Link>
       </Paper>
     </Container>
   );
 }
 
-export const LoginPage = inject(USER_STORE)(observer(LoginPageImpl))
+export const FileUploadPage = FileUploadPageImpl

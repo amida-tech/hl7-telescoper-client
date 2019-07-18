@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Typography, makeStyles, TextField, List, ListSubheader, ListItem, ListItemText } from '@material-ui/core';
 
-import mockMessage from '../data/mockMessage';
+import { inject, observer } from 'mobx-react';
+import { FILE_STORE, IFileStore } from '../stores/fileStore';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -87,12 +88,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MessagePageImpl: React.FC<RouteComponentProps> = (props) => {
+const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
+  const { history, match: { params }, fileStore: { getMessage, currentMessage } } = props
+  const { messageIndex, fileId } = params as any
+
   const classes = useStyles();
-  const fileName = 'Mock File';
-  const message = mockMessage;
   const [[selectedSegmentIndex, selectedFieldIndex], setSelected] = useState([-1, -1]);
-  return (
+  useEffect(() => {
+    getMessage(fileId, parseInt(messageIndex))
+  }, [getMessage, fileId, messageIndex])
+
+  const fileName = 'Mock File';
+  const message = currentMessage;
+  return message ? (
     <div className={classes.container}>
       <Typography
         variant="h4"
@@ -110,6 +118,7 @@ const MessagePageImpl: React.FC<RouteComponentProps> = (props) => {
         type="number"
         value={message.messageNumWithinFile}
         label="Message Number"
+        onChange={(event) => history.push(`/app/files/${fileId}/messages/${event.target.value}`)}
       />
       <div className={classes.rawMessageContainer}>
         {message.rawMessage.split('\n').filter(segment => !!segment).map((segment, segmentIndex) => (
@@ -118,10 +127,11 @@ const MessagePageImpl: React.FC<RouteComponentProps> = (props) => {
             key={`rawSegment-${segmentIndex}`}
           >
             {segment.split('|').map((field, fieldIndex) => (
-              <span>
+              <span
+                key={`rawField-${segmentIndex}-${fieldIndex}`}
+              >
                 {fieldIndex !== 0 && '|'}
                 <span
-                  key={`rawField-${segmentIndex}-${fieldIndex}`}
                   className={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
                   onClick={() => setSelected([segmentIndex, fieldIndex])}
                 >
@@ -169,7 +179,7 @@ const MessagePageImpl: React.FC<RouteComponentProps> = (props) => {
         </List>
       </div>
     </div>
-  );
+  ) : null;
 }
 
-export const MessagePage = MessagePageImpl
+export const MessagePage = inject(FILE_STORE)(observer(MessagePageImpl))

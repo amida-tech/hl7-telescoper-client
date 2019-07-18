@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { Container, Paper, Typography, TextField, makeStyles, Grid, Button } from '@material-ui/core';
 
 import { IUserStore, USER_STORE } from '../stores/userStore';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,7 +35,7 @@ const SignUpPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> 
     try {
       setError(false)
       await signUp(email, username, password)
-      history.push('/app')
+      history.push('/auth/login')
     } catch {
       setError(true)
     }
@@ -92,6 +93,7 @@ const SignUpPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> 
             Error. Try Again.
           </Typography>
         )}
+        <Link to="/auth/login">Login here</Link>
       </Paper>
     </Container>
   );

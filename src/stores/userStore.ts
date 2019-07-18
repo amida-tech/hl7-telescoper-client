@@ -26,7 +26,7 @@ export class UserStore implements IUserStore {
   rehydrate() {
     const token = localStorage.getItem(TOKEN_STORAGE_KEY)
     if (token) {
-      this.token = token
+      this.setToken(token)
     }
     this.rehydrated = true
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Container, Typography, makeStyles, Grid, Card, CardContent, CardActions, Button } from '@material-ui/core';
@@ -18,8 +18,11 @@ const useStyles = makeStyles(theme => ({
 
 const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
   const { fileStore } = props
-  const { files } = fileStore
+  const { files, getFiles } = fileStore
   const classes = useStyles();
+  useEffect(() => {
+    getFiles()
+  }, [getFiles])
   return (
     <Container maxWidth="sm">
       <Typography
@@ -33,8 +36,11 @@ const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> =
         direction="column"
         spacing={2}
       >
+        <Grid item>
+          <Link to="/app/files/upload">Upload</Link>
+        </Grid>
         {files.map((f) => (
-          <Grid item key={f.id}>
+          <Grid item key={f._id}>
             <Card>
               <CardContent>
                 <Typography>
@@ -44,7 +50,7 @@ const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> =
               <CardActions>
                 <Grid container justify="flex-end">
                   <Grid item>
-                    <Link to={`/app/files/${f.id}`}>
+                    <Link to={`/app/files/${f._id}`}>
                       <Button>
                         explore
                       </Button>
