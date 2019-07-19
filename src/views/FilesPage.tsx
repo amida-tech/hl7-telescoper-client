@@ -40,17 +40,17 @@ const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> =
           <Link to="/app/files/upload">Upload</Link>
         </Grid>
         {files.map((f) => (
-          <Grid item key={f._id}>
+          <Grid item key={f.id}>
             <Card>
               <CardContent>
                 <Typography>
-                  {f.filename}
+                  {f.name}
                 </Typography>
               </CardContent>
               <CardActions>
                 <Grid container justify="flex-end">
                   <Grid item>
-                    <Link to={`/app/files/${f._id}`}>
+                    <Link to={`/app/files/${f.id}`}>
                       <Button>
                         explore
                       </Button>

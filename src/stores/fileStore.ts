@@ -14,20 +14,7 @@ export interface IFileStore {
 
 export class FileStore implements IFileStore {
   // TODO remove mock data
-  @observable files: HL7File[] = [
-    {
-      _id: '1',
-      createdAt: '2019-07-02T21:01:23.894Z',
-      updatedAt: '2019-07-02T21:01:23.894Z',
-      filename: 'test1',
-    },
-    {
-      _id: '2',
-      createdAt: '2019-07-02T21:01:23.894Z',
-      updatedAt: '2019-07-02T21:01:23.894Z',
-      filename: 'test2',
-    },
-  ]
+  @observable files: HL7File[] = []
   @observable currentMessage?: HL7Message = mockMessage as HL7Message
 
   @action.bound
@@ -42,7 +29,11 @@ export class FileStore implements IFileStore {
   @action.bound
   async getFiles() {
     const files = await telescoperApi.getFiles()
-    this.setFiles(files)
+    if (files) {
+      this.setFiles(files)
+    } else {
+      this.setFiles([])
+    }
   }
   @action.bound
   async getMessage(fileId: string, messageIndexWithinFile: number) {
