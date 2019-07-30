@@ -12,11 +12,6 @@ const useStyles = makeStyles(theme => ({
     height: '100vh',
     gridTemplateColumns: '1fr 2fr 1fr 1fr',
     gridTemplateRows: 'auto 3fr 4fr',
-    // gridTemplateAreas: `
-    //   "title filter filter select"
-    //   "raw raw raw raw"
-    //   "list list list list"
-    // `,
     gridTemplateAreas: `
       "title filter filter select"
       "raw raw list list"
@@ -48,7 +43,6 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1.2em',
     lineHeight: '1.3em',
     whiteSpace: 'nowrap',
-    // resize: 'vertical',
   },
   segmentListContainer: {
     gridArea: 'list',
