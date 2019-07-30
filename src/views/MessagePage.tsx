@@ -83,7 +83,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
-  const { history, match: { params }, fileStore: { getMessage, currentMessage } } = props
+  const { history, match: { params }, fileStore: { files, getMessage, currentMessage } } = props
   const { messageIndex, fileId } = params as any
 
   const classes = useStyles();
@@ -92,7 +92,8 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
     getMessage(fileId, parseInt(messageIndex))
   }, [getMessage, fileId, messageIndex])
 
-  const fileName = 'Mock File';
+  const file = files.find((f) => f.id === fileId);
+  const fileName = file ? file.name : 'Unknown File Name';
   const message = currentMessage;
   return message ? (
     <div className={classes.container}>
@@ -104,7 +105,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
       </Typography>
       <TextField
         className={classes.filter}
-        placeholder='I.e. PID-2 = Eric'
+        placeholder="I.e. PID-5 = ERIC"
         label="Filter"
       />
       <TextField

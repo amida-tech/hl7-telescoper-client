@@ -1,7 +1,6 @@
 import { observable, action } from 'mobx';
 import { telescoperApi } from '../services/api';
 import { HL7File, HL7Message } from '../types';
-import mockMessage from '../data/mockMessage';
 
 export interface IFileStore {
   files: HL7File[];
@@ -13,9 +12,8 @@ export interface IFileStore {
 }
 
 export class FileStore implements IFileStore {
-  // TODO remove mock data
   @observable files: HL7File[] = []
-  @observable currentMessage?: HL7Message = mockMessage as HL7Message
+  @observable currentMessage?: HL7Message
 
   @action.bound
   setFiles(files: HL7File[]) {
