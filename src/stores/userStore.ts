@@ -1,37 +1,55 @@
 import { observable, action, computed } from 'mobx';
 import { telescoperApi } from '../services/api';
 
+const TOKEN_STORAGE_KEY = 'token'
+
 export interface IUserStore {
-  username?: string;
+  token?: string;
+  rehydrated: boolean;
   isLoggedIn: boolean;
-  setUsername(username?: string): void;
+  rehydrate(): void;
+  setToken(token?: string): void;
   signUp(email: string, username: string, password: string): Promise<void>;
+  login(username: string, password: string): Promise<void>;
 }
 
 export class UserStore implements IUserStore {
-  @observable username: string | undefined = undefined;
+  @observable token: string | undefined = undefined;
+  @observable rehydrated: boolean = false;
 
   @computed
   get isLoggedIn(): boolean {
-    return this.username !== undefined;
+    return this.token !== undefined;
   }
 
   @action.bound
-  setUsername(username?: string): void {
-    this.username = username;
-    // TODO load saved username from localStorage on startup
-    if (username !== undefined) {
-      localStorage.setItem('username', username)
-    } else {
-      localStorage.removeItem('username')
+  rehydrate() {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY)
+    if (token) {
+      this.token = token
     }
-    telescoperApi.setToken(username)
+    this.rehydrated = true
+  }
+
+  @action.bound
+  setToken(token?: string) {
+    this.token = token;
+    if (token !== undefined) {
+      localStorage.setItem(TOKEN_STORAGE_KEY, token)
+    } else {
+      localStorage.removeItem(TOKEN_STORAGE_KEY)
+    }
+    telescoperApi.setToken(token)
   }
 
   @action.bound
   async signUp(email: string, username: string, password: string) {
-    const { username: resUsername } = await telescoperApi.signUp(email, username, password)
-    this.setUsername(resUsername)
+    await telescoperApi.signUp(email, username, password)
+  }
+  @action.bound
+  async login(username: string, password: string) {
+    const { token } = await telescoperApi.login(username, password)
+    this.setToken(token)
   }
 }
 
