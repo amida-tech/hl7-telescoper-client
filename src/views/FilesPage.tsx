@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { Container, Paper, Typography, makeStyles, Grid, Card, CardContent, CardActions, Button } from '@material-ui/core';
+import { Container, Typography, makeStyles, Grid, Card, CardContent, CardActions, Button } from '@material-ui/core';
 import { IFileStore, FILE_STORE } from '../stores/fileStore';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
@@ -18,8 +18,11 @@ const useStyles = makeStyles(theme => ({
 
 const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
   const { fileStore } = props
-  const { files } = fileStore
+  const { files, getFiles } = fileStore
   const classes = useStyles();
+  useEffect(() => {
+    getFiles()
+  }, [getFiles])
   return (
     <Container maxWidth="sm">
       <Typography
@@ -33,12 +36,15 @@ const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> =
         direction="column"
         spacing={2}
       >
+        <Grid item>
+          <Link to="/app/files/upload">Upload</Link>
+        </Grid>
         {files.map((f) => (
           <Grid item key={f.id}>
             <Card>
               <CardContent>
                 <Typography>
-                  {f.filename}
+                  {f.name}
                 </Typography>
               </CardContent>
               <CardActions>

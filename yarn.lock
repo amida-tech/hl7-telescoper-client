@@ -4649,6 +4649,11 @@ he@1.2.x:
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
+health-level-seven-parser@1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/health-level-seven-parser/-/health-level-seven-parser-1.2.2.tgz#4bad51335c54a7b82922b1e14ff9e4df6876aa47"
+  integrity sha512-KUlBxCbLTYzj7KX/CapNbNDYol2VBNEqYfK1MzZLNuXwUpKEfFBio8CAwfWc0f4B+/TEtBmN8jaE9zPYafPlNA==
+
 hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
@@ -4665,6 +4670,11 @@ history@^4.9.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
     value-equal "^0.4.0"
+
+hl7-dictionary@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/hl7-dictionary/-/hl7-dictionary-1.0.1.tgz#6fd9e9651bb0e4acf1f2f1f8700eb044a0f73167"
+  integrity sha1-b9npZRuw5Kzx8vH4cA6wRKD3MWc=
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
