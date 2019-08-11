@@ -44,7 +44,7 @@ const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> =
             <Card>
               <CardContent>
                 <Typography>
-                  {f.name}
+                  {f.filename}
                 </Typography>
               </CardContent>
               <CardActions>
