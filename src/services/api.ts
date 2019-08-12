@@ -1,13 +1,26 @@
 import axios from 'axios'
 import { HL7File, HL7Message } from '../types';
+import { stores } from '../stores'
+import { USER_STORE } from '../stores/userStore'
 
 // TODO config for url
 const baseURL = 'http://localhost:4040'
+const api = axios.create({
+  baseURL,
+})
+
+api.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  if (error.response.data == 'Unauthorized') {
+    stores[USER_STORE].logout()
+    alert("Oops! Your session has expired. Please sign in to continue");
+  }
+  return Promise.reject(error);
+});
 
 export const telescoperApi = {
-  api: axios.create({
-    baseURL,
-  }),
+  api,
   setToken(token?: string) {
     let newVal
     if (token) {

@@ -43,6 +43,12 @@ export class UserStore implements IUserStore {
   }
 
   @action.bound
+  logout() {
+    this.setToken(undefined)
+    window.location.replace("/auth/login");
+  }
+
+  @action.bound
   async signUp(email: string, username: string, password: string) {
     await telescoperApi.signUp(email, username, password)
   }
