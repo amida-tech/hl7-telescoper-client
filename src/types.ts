@@ -2,7 +2,7 @@ import { Segment } from 'health-level-seven-parser'
 
 export interface HL7File {
   id: string
-  name: string
+  filename: string
 }
 
 export interface HL7Message {

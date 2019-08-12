@@ -93,7 +93,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
   }, [getMessage, fileId, messageIndex])
 
   const file = files.find((f) => f.id === fileId);
-  const fileName = file ? file.name : 'Unknown File Name';
+  const fileName = file ? file.filename : 'Unknown File Name';
   const message = currentMessage;
   return message ? (
     <div className={classes.container}>
