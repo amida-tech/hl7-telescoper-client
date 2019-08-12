@@ -16,7 +16,7 @@ api.interceptors.response.use(function (response) {
     stores[USER_STORE].logout()
     alert("Oops! Your session has expired. Please sign in to continue");
   }
-  return Promise.reject(error);
+  return error;
 });
 
 export const telescoperApi = {
