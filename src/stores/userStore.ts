@@ -45,7 +45,6 @@ export class UserStore implements IUserStore {
   @action.bound
   logout() {
     this.setToken(undefined)
-    window.location.replace("/auth/login");
   }
 
   @action.bound
