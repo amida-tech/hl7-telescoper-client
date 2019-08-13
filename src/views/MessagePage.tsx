@@ -82,7 +82,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-let currentFile;
 const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
   const { history, match: { params }, fileStore: { files, getMessage, currentMessage, getFile, file } } = props
   const { messageIndex, fileId } = params as any
