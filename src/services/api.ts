@@ -42,6 +42,10 @@ export const telescoperApi = {
     const response = await this.api.get('/api/hl7/files')
     return response.data
   },
+  async getFile(fileId: string): Promise<HL7File> {
+    const response = await this.api.get(`/api/hl7/files/${fileId}`)
+    return response.data
+  },
   async uploadFile(file: File): Promise<void> {
     const data = new FormData()
     data.append('hl7-file', file)
