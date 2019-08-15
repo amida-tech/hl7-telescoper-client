@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { Typography, makeStyles, TextField, List, ListSubheader, ListItem, ListItemText, ListItemIcon, Collapse } from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
+import ExpandableListItem from '../components/ExpandableListItem';
 
 import { inject, observer } from 'mobx-react';
 import { FILE_STORE, IFileStore } from '../stores/fileStore';
@@ -92,15 +93,10 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
   const { messageIndex, fileId } = params as any
 
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
   const [[selectedSegmentIndex, selectedFieldIndex], setSelected] = useState([-1, -1]);
   useEffect(() => {
     getMessage(fileId, parseInt(messageIndex))
   }, [getMessage, fileId, messageIndex])
-
-  function handleClick() {
-    setOpen(!open);
-  }
 
   const file = files.find((f) => f.id === fileId);
   const fileName = file ? file.name : 'Unknown File Name';
@@ -169,36 +165,14 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                 {(segment.children as any[]).map((field, fieldIndex) => !field ? undefined : (
                   <div>
                     {field.children ? <div>
-                      <ListItem button
-                        key={`parsedField-${segmentIndex}-${fieldIndex}`}
-                        className={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
-                        onClick={() => {
-                          setSelected([segmentIndex, fieldIndex]);
-                          handleClick();
-                        }}
+                      <ExpandableListItem
+                        field={field}
+                        expandableKey={`parsedField-${segmentIndex}-${fieldIndex}`}
+                        expandableClassName={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
+                        expandableOnClick={() => setSelected([segmentIndex, fieldIndex])}
+                        nestedClassName={[classes.nested, selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field].join(' ')}
                       >
-                        <ListItemText
-                            primary={field.value ? field.value : '(empty)'}
-                            secondary={field.definition && field.definition.description ? field.definition.description : field.name}
-                        />
-                        {open ? <ListItemIcon><ExpandLess/></ListItemIcon> : <ListItemIcon><ExpandMore/></ListItemIcon>}
-                      </ListItem>
-                      <Collapse in={open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                          {(field.children as any[]).map((subfield, subfieldIndex) => !subfield ? undefined : (
-                            <div><ListItem button
-                              key={`parsedField-${segmentIndex}-${subfieldIndex}`}
-                              className={[classes.nested, selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field].join(' ')}
-                              onClick={() => setSelected([segmentIndex, subfieldIndex])}
-                            >
-                              <ListItemText
-                                primary={subfield.value ? subfield.value : '(empty)'}
-                                secondary={subfield.definition && subfield.definition.description ? subfield.definition.description : subfield.name}
-                              />
-                            </ListItem></div>
-                          ))}
-                        </List>
-                      </Collapse>
+                      </ExpandableListItem>
                     </div> : <ListItem
                         key={`parsedField-${segmentIndex}-${fieldIndex}`}
                         className={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
