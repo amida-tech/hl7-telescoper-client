@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { Typography, makeStyles, TextField, List, ListSubheader, ListItem, ListItemText, ListItemIcon, Collapse } from '@material-ui/core';
-import { ExpandMore, ExpandLess } from '@material-ui/icons';
+import { Typography, makeStyles, TextField, List, ListSubheader, ListItem, ListItemText } from '@material-ui/core';
 import ExpandableListItem from '../components/ExpandableListItem';
 
 import { inject, observer } from 'mobx-react';
@@ -164,7 +163,8 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                 </ListSubheader>
                 {(segment.children as any[]).map((field, fieldIndex) => !field ? undefined : (
                   <div>
-                    {field.children ? <div>
+                    {field.children ? (
+                      <div>
                       <ExpandableListItem
                         field={field}
                         expandableKey={`parsedField-${segmentIndex}-${fieldIndex}`}
@@ -173,7 +173,9 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                         nestedClassName={[classes.nested, selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field].join(' ')}
                       >
                       </ExpandableListItem>
-                    </div> : <ListItem
+                      </div>
+                    ) : (
+                      <ListItem
                         key={`parsedField-${segmentIndex}-${fieldIndex}`}
                         className={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
                         onClick={() => setSelected([segmentIndex, fieldIndex])}
@@ -183,7 +185,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                             secondary={field.definition && field.definition.description ? field.definition.description : field.name}
                         />
                       </ListItem>
-                    }
+                    )}
                   </div>
                 ))}
               </ul>

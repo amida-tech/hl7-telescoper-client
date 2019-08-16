@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {ListItem, ListItemText, ListItemIcon, Collapse, List} from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
@@ -13,7 +13,7 @@ const ExpandableListItem: React.FC<{
   nestedClassName: string
 }> = (props) => {
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const {
     field,
@@ -23,17 +23,13 @@ const ExpandableListItem: React.FC<{
     nestedClassName
   } = props;
 
-  function handleClick() {
-    setOpen(!open);
-  }
-
   return <div>
     <ListItem button
       key={expandableKey}
       className={expandableClassName}
       onClick={() => {
         expandableOnClick();
-        handleClick();
+        setOpen(!open);
       }}
     >
       <ListItemText
@@ -45,7 +41,7 @@ const ExpandableListItem: React.FC<{
     <Collapse in={open} timeout="auto" unmountOnExit>
       <List component="div" disablePadding>
         {(field.children as any[]).map((subfield, subfieldIndex) => !subfield ? undefined : (
-          <div><ListItem button
+          <ListItem button
              key={`${expandableKey}-${subfieldIndex}`}
              className={nestedClassName}
           >
@@ -53,7 +49,7 @@ const ExpandableListItem: React.FC<{
               primary={subfield.value ? subfield.value : '(empty)'}
               secondary={subfield.definition && subfield.definition.description ? subfield.definition.description : subfield.name}
             />
-          </ListItem></div>
+          </ListItem>
         ))}
       </List>
     </Collapse>
