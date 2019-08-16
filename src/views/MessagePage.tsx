@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Typography, makeStyles, TextField, List, ListSubheader, ListItem, ListItemText } from '@material-ui/core';
+import ExpandableListItem from '../components/ExpandableListItem';
 
 import { inject, observer } from 'mobx-react';
 import { FILE_STORE, IFileStore } from '../stores/fileStore';
@@ -80,6 +81,10 @@ const useStyles = makeStyles(theme => ({
       cursor: 'pointer',
     },
   },
+  nested: {
+    paddingLeft: theme.spacing(5),
+    backgroundColor: '#BCE9F7',
+  },
 }));
 
 const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
@@ -157,16 +162,31 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                   {segment.definition && segment.definition.description ? segment.definition.description : segment.name}
                 </ListSubheader>
                 {(segment.children as any[]).map((field, fieldIndex) => !field ? undefined : (
-                  <ListItem
-                    key={`parsedField-${segmentIndex}-${fieldIndex}`}
-                    className={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
-                    onClick={() => setSelected([segmentIndex, fieldIndex])}
-                    >
-                    <ListItemText
-                      primary={field.value ? field.value : '(empty)'}
-                      secondary={field.definition && field.definition.description ? field.definition.description : field.name}
-                    />
-                  </ListItem>
+                  <div>
+                    {field.children ? (
+                      <div>
+                      <ExpandableListItem
+                        field={field}
+                        expandableKey={`parsedField-${segmentIndex}-${fieldIndex}`}
+                        expandableClassName={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
+                        expandableOnClick={() => setSelected([segmentIndex, fieldIndex])}
+                        nestedClassName={[classes.nested, selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field].join(' ')}
+                      >
+                      </ExpandableListItem>
+                      </div>
+                    ) : (
+                      <ListItem
+                        key={`parsedField-${segmentIndex}-${fieldIndex}`}
+                        className={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
+                        onClick={() => setSelected([segmentIndex, fieldIndex])}
+                      >
+                        <ListItemText
+                            primary={field.value ? field.value : '(empty)'}
+                            secondary={field.definition && field.definition.description ? field.definition.description : field.name}
+                        />
+                      </ListItem>
+                    )}
+                  </div>
                 ))}
               </ul>
             </li>
