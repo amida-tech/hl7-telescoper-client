@@ -88,16 +88,13 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
 
   const classes = useStyles();
   const [[selectedSegmentIndex, selectedFieldIndex], setSelected] = useState([-1, -1]);
-  const [filename, setFileName] = useState('')
+  
   useEffect(() => {
     getMessage(fileId, parseInt(messageIndex))
     getFile(fileId)
   }, [getMessage, fileId, messageIndex])
 
-  if (file && file.filename !== filename) {
-    setFileName(file.filename)
-  }
-
+  const filename = (file && file.filename) ? file.filename.split('/').pop() : 'Unknown File'
   const message = currentMessage;
   return message ? (
     <div className={classes.container}>
@@ -105,7 +102,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
         variant="h4"
         className={classes.title}
       >
-        {filename.split('/').pop()}
+        {filename}
       </Typography>
       <TextField
         className={classes.filter}
