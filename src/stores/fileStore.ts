@@ -10,7 +10,7 @@ export interface IFileStore {
   setCurrentMessage(msg: HL7Message): void;
   getFiles(): Promise<void>;
   getFile(fileId: string): Promise<void>;
-  setCurrentFile(file: HL7File): void;
+  setCurrentFile(file?: HL7File): void;
   getMessage(fileId: string, messageIndexWithinFile: number): Promise<void>;
 }
 
@@ -25,7 +25,7 @@ export class FileStore implements IFileStore {
   }
 
   @action.bound
-  setCurrentFile(file: HL7File) {
+  setCurrentFile(file?: HL7File) {
     this.currentFile = file
   }
   @action.bound
@@ -54,7 +54,7 @@ export class FileStore implements IFileStore {
     if (file) {
       this.setCurrentFile(file)
     } else {
-      this.setCurrentFile({id: '', filename: ''})
+      this.setCurrentFile(undefined)
     }
   }
 }
