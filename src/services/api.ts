@@ -12,7 +12,7 @@ const api = axios.create({
 api.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
-  if (error.response.status == 401) {
+  if (error.response.status === 401) {
     stores[USER_STORE].logout()
     alert("Oops! Your session has expired. Please sign in to continue");
   }

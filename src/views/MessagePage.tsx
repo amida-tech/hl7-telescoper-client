@@ -83,7 +83,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
-  const { history, match: { params }, fileStore: { files, getMessage, currentMessage, getFile, currentFile } } = props
+  const { history, match: { params }, fileStore: { getMessage, currentMessage, getFile, currentFile } } = props
   const { messageIndex, fileId } = params as any
 
   const classes = useStyles();
@@ -92,9 +92,9 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
   useEffect(() => {
     getMessage(fileId, parseInt(messageIndex))
     getFile(fileId)
-  }, [getMessage, fileId, messageIndex])
+  }, [getFile, getMessage, fileId, messageIndex])
 
-  const filename = (currentFile && currentFile.filename) ? currentFile.filename.split('/').pop() : 'Unknown File'
+  const filename = (currentFile && currentFile.filename) || 'Unknown File'
   const message = currentMessage;
   return message ? (
     <div className={classes.container}>
