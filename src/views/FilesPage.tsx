@@ -17,12 +17,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
-  const { fileStore } = props
-  const { files, getFiles } = fileStore
+  const { fileStore } = props;
+  const { files, getFiles } = fileStore;
   const classes = useStyles();
   useEffect(() => {
-    getFiles()
-  }, [getFiles])
+    getFiles();
+  }, [getFiles]);
   return (
     <Container maxWidth="sm">
       <Typography
@@ -64,6 +64,6 @@ const FilesPageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> =
       </Grid>
     </Container>
   );
-}
+};
 
-export const FilesPage = inject(FILE_STORE)(observer(FilesPageImpl))
+export const FilesPage = inject(FILE_STORE)(observer(FilesPageImpl));

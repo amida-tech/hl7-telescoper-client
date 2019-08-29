@@ -25,13 +25,13 @@ const FileUploadPageImpl: React.FC<RouteComponentProps> = (props) => {
 
   const uploadAction = async (event: ChangeEvent<HTMLInputElement>) => {
     try {
-      setError(false)
-      await telescoperApi.uploadFile(event.target.files![0])
-      history.push('/app/files')
+      setError(false);
+      await telescoperApi.uploadFile(event.target.files![0]);
+      history.push('/app/files');
     } catch {
-      setError(true)
+      setError(true);
     }
-  }
+  };
 
   return (
     <Container maxWidth="sm">
@@ -72,6 +72,6 @@ const FileUploadPageImpl: React.FC<RouteComponentProps> = (props) => {
       </Paper>
     </Container>
   );
-}
+};
 
-export const FileUploadPage = FileUploadPageImpl
+export const FileUploadPage = FileUploadPageImpl;

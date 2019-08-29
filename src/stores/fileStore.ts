@@ -21,42 +21,42 @@ export class FileStore implements IFileStore {
 
   @action.bound
   setFiles(files: HL7File[]) {
-    this.files = files
+    this.files = files;
   }
 
   @action.bound
   setCurrentFile(file?: HL7File) {
-    this.currentFile = file
+    this.currentFile = file;
   }
   @action.bound
   setCurrentMessage(msg: HL7Message) {
-    this.currentMessage = msg
+    this.currentMessage = msg;
   }
 
   @action.bound
   async getFiles() {
-    const files = await telescoperApi.getFiles()
+    const files = await telescoperApi.getFiles();
     if (files) {
-      this.setFiles(files)
+      this.setFiles(files);
     } else {
-      this.setFiles([])
+      this.setFiles([]);
     }
   }
   @action.bound
   async getMessage(fileId: string, messageIndexWithinFile: number) {
-    const msg = await telescoperApi.getMessage(fileId, messageIndexWithinFile)
-    this.setCurrentMessage(msg)
+    const msg = await telescoperApi.getMessage(fileId, messageIndexWithinFile);
+    this.setCurrentMessage(msg);
   }
 
   @action.bound
   async getFile(fileId: string) {
-    const file = await telescoperApi.getFile(fileId)
+    const file = await telescoperApi.getFile(fileId);
     if (file) {
-      this.setCurrentFile(file)
+      this.setCurrentFile(file);
     } else {
-      this.setCurrentFile(undefined)
+      this.setCurrentFile(undefined);
     }
   }
 }
 
-export const FILE_STORE = 'fileStore'
+export const FILE_STORE = 'fileStore';

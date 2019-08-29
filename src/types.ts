@@ -1,4 +1,4 @@
-import { Segment } from 'health-level-seven-parser'
+import { Segment } from 'health-level-seven-parser';
 
 export interface HL7File {
   id: string

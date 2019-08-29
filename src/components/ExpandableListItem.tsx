@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {ListItem, ListItemText, ListItemIcon, Collapse, List} from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 
-import { Field } from 'health-level-seven-parser'
+import { Field } from 'health-level-seven-parser';
 
 const ExpandableListItem: React.FC<{
   field: Field;
@@ -20,7 +20,7 @@ const ExpandableListItem: React.FC<{
     expandableKey,
     expandableClassName,
     expandableOnClick,
-    nestedClassName
+    nestedClassName,
   } = props;
 
   return <div>
@@ -55,6 +55,6 @@ const ExpandableListItem: React.FC<{
     </Collapse>
   </div>;
 
-}
+};
 
-export default ExpandableListItem
+export default ExpandableListItem;

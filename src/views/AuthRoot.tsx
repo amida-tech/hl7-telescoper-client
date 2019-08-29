@@ -11,4 +11,4 @@ export const AuthRoot: React.FC<RouteComponentProps> = ({ match }) => {
       <Redirect to={`${match.path}/login`} />
     </Switch>
   );
-}
+};
