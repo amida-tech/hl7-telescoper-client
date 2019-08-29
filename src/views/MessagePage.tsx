@@ -88,17 +88,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
-  const { history, match: { params }, fileStore: { files, getMessage, currentMessage } } = props
+  const { history, match: { params }, fileStore: { getMessage, currentMessage, getFile, currentFile } } = props
   const { messageIndex, fileId } = params as any
 
   const classes = useStyles();
   const [[selectedSegmentIndex, selectedFieldIndex], setSelected] = useState([-1, -1]);
+
   useEffect(() => {
     getMessage(fileId, parseInt(messageIndex))
-  }, [getMessage, fileId, messageIndex])
+    getFile(fileId)
+  }, [getFile, getMessage, fileId, messageIndex])
 
-  const file = files.find((f) => f.id === fileId);
-  const fileName = file ? file.filename : 'Unknown File Name';
+  const filename = (currentFile && currentFile.filename) || 'Unknown File'
   const message = currentMessage;
   return message ? (
     <div className={classes.container}>
@@ -106,7 +107,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
         variant="h4"
         className={classes.title}
       >
-        {fileName}
+        {filename}
       </Typography>
       <TextField
         className={classes.filter}
