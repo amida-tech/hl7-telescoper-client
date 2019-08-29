@@ -1,8 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { Container, Paper, Typography, makeStyles, Grid, TextField, Button } from '@material-ui/core';
-import { observer, inject } from 'mobx-react';
+import { Container, Paper, Typography, makeStyles, Grid, Button } from '@material-ui/core';
 import { telescoperApi } from '../services/api';
 
 const useStyles = makeStyles(theme => ({
