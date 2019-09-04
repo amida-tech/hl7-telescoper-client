@@ -45,4 +45,4 @@ export const App: React.FC = () => {
       </Router>
     </Provider>
   );
-}
+};

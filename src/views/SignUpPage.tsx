@@ -33,13 +33,13 @@ const SignUpPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> 
 
   const signUpAction = async () => {
     try {
-      setError(false)
-      await signUp(email, username, password)
-      history.push('/auth/login')
+      setError(false);
+      await signUp(email, username, password);
+      history.push('/auth/login');
     } catch {
-      setError(true)
+      setError(true);
     }
-  }
+  };
 
   return (
     <Container maxWidth="sm">
@@ -97,6 +97,6 @@ const SignUpPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> 
       </Paper>
     </Container>
   );
-}
+};
 
-export const SignUpPage = inject(USER_STORE)(observer(SignUpPageImpl))
+export const SignUpPage = inject(USER_STORE)(observer(SignUpPageImpl));

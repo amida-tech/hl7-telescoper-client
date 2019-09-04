@@ -1,7 +1,7 @@
 import { observable, action, computed } from 'mobx';
 import { telescoperApi } from '../services/api';
 
-const TOKEN_STORAGE_KEY = 'token'
+const TOKEN_STORAGE_KEY = 'token';
 
 export interface IUserStore {
   token?: string;
@@ -24,38 +24,38 @@ export class UserStore implements IUserStore {
 
   @action.bound
   rehydrate() {
-    const token = localStorage.getItem(TOKEN_STORAGE_KEY)
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
     if (token) {
-      this.setToken(token)
+      this.setToken(token);
     }
-    this.rehydrated = true
+    this.rehydrated = true;
   }
 
   @action.bound
   setToken(token?: string) {
     this.token = token;
     if (token !== undefined) {
-      localStorage.setItem(TOKEN_STORAGE_KEY, token)
+      localStorage.setItem(TOKEN_STORAGE_KEY, token);
     } else {
-      localStorage.removeItem(TOKEN_STORAGE_KEY)
+      localStorage.removeItem(TOKEN_STORAGE_KEY);
     }
-    telescoperApi.setToken(token)
+    telescoperApi.setToken(token);
   }
 
   @action.bound
   logout() {
-    this.setToken(undefined)
+    this.setToken(undefined);
   }
 
   @action.bound
   async signUp(email: string, username: string, password: string) {
-    await telescoperApi.signUp(email, username, password)
+    await telescoperApi.signUp(email, username, password);
   }
   @action.bound
   async login(username: string, password: string) {
-    const { token } = await telescoperApi.login(username, password)
-    this.setToken(token)
+    const { token } = await telescoperApi.login(username, password);
+    this.setToken(token);
   }
 }
 
-export const USER_STORE = 'userStore'
+export const USER_STORE = 'userStore';

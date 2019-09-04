@@ -30,13 +30,13 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
 
   const signUpAction = async () => {
     try {
-      setError(false)
-      await login(username, password)
-      history.push('/app')
+      setError(false);
+      await login(username, password);
+      history.push('/app');
     } catch {
-      setError(true)
+      setError(true);
     }
-  }
+  };
 
   return (
     <Container maxWidth="sm">
@@ -86,6 +86,6 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
       </Paper>
     </Container>
   );
-}
+};
 
-export const LoginPage = inject(USER_STORE)(observer(LoginPageImpl))
+export const LoginPage = inject(USER_STORE)(observer(LoginPageImpl));
