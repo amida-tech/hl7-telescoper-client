@@ -6,6 +6,8 @@ import ExpandableListItem from '../components/ExpandableListItem';
 
 import { inject, observer } from 'mobx-react';
 import { FILE_STORE, IFileStore } from '../stores/fileStore';
+var HL7Dictionary = require('hl7-dictionary');
+console.log(HL7Dictionary.definitions['2.7'])
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -101,6 +103,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
 
   const filename = (currentFile && currentFile.filename) || 'Unknown File';
   const message = currentMessage;
+  
   return message ? (
     <div className={classes.container}>
       <Typography
@@ -183,7 +186,9 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                       >
                         <ListItemText
                             primary={field.value ? field.value : '(empty)'}
-                            secondary={field.definition && field.definition.description ? field.definition.description : field.name}
+                            {...console.log('inside div', HL7Dictionary.definitions['2.7'].segments[field.name.split('-')[0]].fields[field.name.split('-')[1]].desc)}
+                            secondary={HL7Dictionary.definitions['2.7'].segments[field.name.split('-')[0]].fields[field.name.split('-')[1]].desc ? HL7Dictionary.definitions['2.7'].segments[field.name.split('-')[0]].fields[field.name.split('-')[1]].desc : field.name}
+                            // secondary={field.definition && field.definition.description ? field.definition.description : field.name} //this line you change
                         />
                       </ListItem>
                     )}

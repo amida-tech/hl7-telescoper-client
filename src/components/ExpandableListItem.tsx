@@ -4,6 +4,7 @@ import {ListItem, ListItemText, ListItemIcon, Collapse, List} from '@material-ui
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 
 import { Field } from 'health-level-seven-parser';
+var HL7Dictionary = require('hl7-dictionary');
 
 const ExpandableListItem: React.FC<{
   field: Field;
@@ -47,7 +48,8 @@ const ExpandableListItem: React.FC<{
           >
             <ListItemText
               primary={subfield.value ? subfield.value : '(empty)'}
-              secondary={subfield.definition && subfield.definition.description ? subfield.definition.description : subfield.name}
+              secondary={HL7Dictionary.definitions['2.7'].segments[field.name.split('-')[0]].fields[field.name.split('-')[1]].desc ? HL7Dictionary.definitions['2.7'].segments[field.name.split('-')[0]].fields[field.name.split('-')[1]].desc : field.name}
+              // secondary={subfield.definition && subfield.definition.description ? subfield.definition.description : subfield.name}
             />
           </ListItem>
         ))}
