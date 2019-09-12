@@ -6,8 +6,8 @@ import ExpandableListItem from '../components/ExpandableListItem';
 
 import { inject, observer } from 'mobx-react';
 import { FILE_STORE, IFileStore } from '../stores/fileStore';
-var HL7Dictionary = require('hl7-dictionary');
-console.log(HL7Dictionary.definitions['2.7'])
+var HL7DictionarySegments = require('hl7-dictionary').definitions['2.7'].segments;
+console.log(require('hl7-dictionary').definitions['2.7'])
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -103,6 +103,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
 
   const filename = (currentFile && currentFile.filename) || 'Unknown File';
   const message = currentMessage;
+  const index = 0
   
   return message ? (
     <div className={classes.container}>
@@ -171,9 +172,13 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                       <div>
                       <ExpandableListItem
                         field={field}
+                        fieldIndex={fieldIndex}
+                        segmentName={segment.name}
                         expandableKey={`parsedField-${segmentIndex}-${fieldIndex}`}
                         expandableClassName={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
                         expandableOnClick={() => setSelected([segmentIndex, fieldIndex])}
+                        {...console.log('if children',fieldIndex, field.name, field.definition && field.definition.description ? field.definition.description : field.name)}
+                        // {...console.log('fieldindex', field.children,fieldIndex, field.name, field.definition && field.definition.description ? field.definition.description : field.name)}
                         nestedClassName={[classes.nested, selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field].join(' ')}
                       >
                       </ExpandableListItem>
@@ -185,9 +190,10 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                         onClick={() => setSelected([segmentIndex, fieldIndex])}
                       >
                         <ListItemText
+                            {...console.log('if no children',fieldIndex, field.name, field.definition && field.definition.description ? field.definition.description : field.name)}
                             primary={field.value ? field.value : '(empty)'}
-                            {...console.log('inside div', HL7Dictionary.definitions['2.7'].segments[field.name.split('-')[0]].fields[field.name.split('-')[1]].desc)}
-                            secondary={HL7Dictionary.definitions['2.7'].segments[field.name.split('-')[0]].fields[field.name.split('-')[1]].desc ? HL7Dictionary.definitions['2.7'].segments[field.name.split('-')[0]].fields[field.name.split('-')[1]].desc : field.name}
+                            // {...console.log('----->', fieldIndex, HL7DictionarySegments[segment.name].fields[fieldIndex].desc ? HL7DictionarySegments[segment.name].fields[fieldIndex].desc : field.name)}
+                            secondary={HL7DictionarySegments[segment.name].fields[fieldIndex].desc ? HL7DictionarySegments[segment.name].fields[fieldIndex].desc : field.name}
                             // secondary={field.definition && field.definition.description ? field.definition.description : field.name} //this line you change
                         />
                       </ListItem>
