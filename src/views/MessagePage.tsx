@@ -164,7 +164,8 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                 <ListSubheader
                   className={classes.listSectionListHeader}
                 >
-                  {segment.definition && segment.definition.description ? segment.definition.description : segment.name}
+                  {HL7DictionarySegments[segment.name].desc ? HL7DictionarySegments[segment.name].desc  : segment.name}
+                  {/* {segment.definition && segment.definition.description ? segment.definition.description : segment.name} */}
                 </ListSubheader>
                 {(segment.children as any[]).map((field, fieldIndex) => !field ? undefined : (
                   <div>
