@@ -27,7 +27,6 @@ const ExpandableListItem: React.FC<{
     expandableOnClick,
     nestedClassName,
   } = props;
-  console.log('segment:', segmentName)
   return <div>
     <ListItem button
       key={expandableKey}
