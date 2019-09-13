@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 
 import {ListItem, ListItemText, ListItemIcon, Collapse, List} from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
-
+import { HL7_DICT_OFFSET } from '../stores/userStore';
 import { Field } from 'health-level-seven-parser';
+const HL7Dictionary = require('hl7-dictionary').definitions['2.7.1'];
 
 const ExpandableListItem: React.FC<{
   field: Field;
+  fieldIndex: number;
+  segmentName: string;
   expandableKey: string;
   expandableClassName: string;
   expandableOnClick: () => void;
@@ -17,12 +20,13 @@ const ExpandableListItem: React.FC<{
 
   const {
     field,
+    fieldIndex,
+    segmentName,
     expandableKey,
     expandableClassName,
     expandableOnClick,
     nestedClassName,
   } = props;
-
   return <div>
     <ListItem button
       key={expandableKey}
@@ -31,10 +35,13 @@ const ExpandableListItem: React.FC<{
         expandableOnClick();
         setOpen(!open);
       }}
+      /* ***hl7-dictionary library has it's segment field names offset off by one*** */
     >
       <ListItemText
         primary={field.value ? field.value : '(empty)'}
-        secondary={field.definition && field.definition.description ? field.definition.description : field.name}
+        secondary={
+          segmentName === 'MSH' ? HL7Dictionary.segments[segmentName].fields[fieldIndex].desc ? HL7Dictionary.segments[segmentName].fields[fieldIndex].desc : field.name :
+          HL7Dictionary.segments[segmentName].fields[fieldIndex-HL7_DICT_OFFSET].desc ? HL7Dictionary.segments[segmentName].fields[fieldIndex-HL7_DICT_OFFSET].desc : field.name}
       />
       {open ? <ListItemIcon><ExpandLess/></ListItemIcon> : <ListItemIcon><ExpandMore/></ListItemIcon>}
     </ListItem>
@@ -47,7 +54,12 @@ const ExpandableListItem: React.FC<{
           >
             <ListItemText
               primary={subfield.value ? subfield.value : '(empty)'}
-              secondary={subfield.definition && subfield.definition.description ? subfield.definition.description : subfield.name}
+              secondary={
+                segmentName === 'MSH' ? HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype].subfields[subfieldIndex] ? 
+                HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype].subfields[subfieldIndex].desc : subfield.name : 
+                HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex - HL7_DICT_OFFSET].datatype].subfields[subfieldIndex] ? 
+                HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex-HL7_DICT_OFFSET].datatype].subfields[subfieldIndex].desc : 
+                HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex-HL7_DICT_OFFSET].datatype].desc}
             />
           </ListItem>
         ))}
