@@ -6,6 +6,7 @@ import ExpandableListItem from '../components/ExpandableListItem';
 
 import { inject, observer } from 'mobx-react';
 import { FILE_STORE, IFileStore } from '../stores/fileStore';
+import { HL7_DICT_OFFSET } from '../stores/userStore';
 const HL7DictionarySegments = require('hl7-dictionary').definitions['2.7.1'].segments;
 
 const useStyles = makeStyles(theme => ({
@@ -165,6 +166,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                 >
                   {HL7DictionarySegments[segment.name].desc ? HL7DictionarySegments[segment.name].desc  : segment.name}
                 </ListSubheader>
+                {/* ***hl7-dictionary library has it's segment field names offset off by one*** */}
                 {(segment.children as any[]).map((field, fieldIndex) => !field || fieldIndex === 0 ? undefined : (
                   <div key={fieldIndex}>
                     {field.children ? (
@@ -190,7 +192,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                             primary={field.value ? field.value : '(empty)'}
                             secondary={
                               segment.name === 'MSH' ? HL7DictionarySegments[segment.name].fields[fieldIndex].desc ? HL7DictionarySegments[segment.name].fields[fieldIndex].desc : field.name :
-                              HL7DictionarySegments[segment.name].fields[fieldIndex-1].desc ? HL7DictionarySegments[segment.name].fields[fieldIndex-1].desc : field.name}
+                              HL7DictionarySegments[segment.name].fields[fieldIndex-HL7_DICT_OFFSET].desc ? HL7DictionarySegments[segment.name].fields[fieldIndex-HL7_DICT_OFFSET].desc : field.name}
                         />
                       </ListItem>
                     )}

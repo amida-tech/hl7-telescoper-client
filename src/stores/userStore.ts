@@ -59,3 +59,4 @@ export class UserStore implements IUserStore {
 }
 
 export const USER_STORE = 'userStore';
+export const HL7_DICT_OFFSET = 1
