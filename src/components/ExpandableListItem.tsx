@@ -4,7 +4,7 @@ import {ListItem, ListItemText, ListItemIcon, Collapse, List} from '@material-ui
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 
 import { Field } from 'health-level-seven-parser';
-var HL7Dictionary = require('hl7-dictionary').definitions['2.7'];
+const HL7Dictionary = require('hl7-dictionary').definitions['2.7.1'];
 
 const ExpandableListItem: React.FC<{
   field: Field;
@@ -39,7 +39,9 @@ const ExpandableListItem: React.FC<{
     >
       <ListItemText
         primary={field.value ? field.value : '(empty)'}
-        secondary={field.definition && field.definition.description ? field.definition.description : field.name}
+        secondary={
+          segmentName === 'MSH' ? HL7Dictionary.segments[segmentName].fields[fieldIndex].desc ? HL7Dictionary.segments[segmentName].fields[fieldIndex].desc : field.name :
+          HL7Dictionary.segments[segmentName].fields[fieldIndex-1].desc ? HL7Dictionary.segments[segmentName].fields[fieldIndex-1].desc : field.name}
       />
       {open ? <ListItemIcon><ExpandLess/></ListItemIcon> : <ListItemIcon><ExpandMore/></ListItemIcon>}
     </ListItem>
@@ -52,12 +54,12 @@ const ExpandableListItem: React.FC<{
           >
             <ListItemText
               primary={subfield.value ? subfield.value : '(empty)'}
-              // datatype={...HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype}
-              // {...console.log(field.name, field.value, HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype, fieldIndex, subfield.name, subfieldIndex)}
-              // {...console.log("lets see", HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype].subfields[subfieldIndex])}
-              // {...console.log('*****', HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype].subfields.desc == 'Extended Address' ? 'HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype].subfields[subfieldIndex].desc' : 'subfield.name')}
-              secondary={HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype].subfields[subfieldIndex] ? HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype].subfields[subfieldIndex].desc : subfield.name}
-              // secondary={subfield.definition && subfield.definition.description ? subfield.definition.description : subfield.name}
+              secondary={
+                segmentName === 'MSH' ? HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype].subfields[subfieldIndex] ? 
+                HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex].datatype].subfields[subfieldIndex].desc : subfield.name : 
+                HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex - 1].datatype].subfields[subfieldIndex] ? 
+                HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex-1].datatype].subfields[subfieldIndex].desc : 
+                HL7Dictionary.fields[HL7Dictionary.segments[segmentName].fields[fieldIndex-1].datatype].desc}
             />
           </ListItem>
         ))}
