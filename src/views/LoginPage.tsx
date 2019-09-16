@@ -17,6 +17,9 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(4, 0, 0, 0),
   },
+  errorText: {
+    color: 'red'
+  },
 }));
 
 const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> = (props) => {
@@ -37,6 +40,12 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
       setError(true);
     }
   };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if(event.key === 'Enter'){
+      signUpAction()
+    }
+  }
 
   return (
     <Container maxWidth="sm">
@@ -59,6 +68,7 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
               label="Username"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
+              onKeyDown={(event) =>  handleKeyPress(event)}
             />
           </Grid>
           <Grid item>
@@ -67,6 +77,7 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              onKeyDown={(event) =>  handleKeyPress(event)}
             />
           </Grid>
         </Grid>
@@ -78,7 +89,7 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
           sign in
         </Button>
         { error && (
-          <Typography variant="body1">
+          <Typography variant="body1" className={classes.errorText}>
             Invalid Username or Password. Please Try Again.
           </Typography>
         )}
