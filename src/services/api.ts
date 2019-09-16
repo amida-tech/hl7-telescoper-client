@@ -14,7 +14,6 @@ api.interceptors.response.use(function (response) {
 }, function (error) {
   if (error.response.status === 401) {
     stores[USER_STORE].logout();
-    alert("Oops! Your session has expired. Please sign in to continue");
   }
   return error;
 });

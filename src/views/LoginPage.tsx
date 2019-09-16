@@ -79,7 +79,7 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
         </Button>
         { error && (
           <Typography variant="body1">
-            Error. Try Again.
+            Invalid Username or Password. Please Try Again.
           </Typography>
         )}
         <Link to="/auth/signup">Register here</Link>
