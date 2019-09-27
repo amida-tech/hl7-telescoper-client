@@ -101,6 +101,16 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
 
   const filename = (currentFile && currentFile.filename) || 'Unknown File';
   const message = currentMessage;
+
+  const jumpTo = (segmentIndex:number, fieldIndex:number) => {
+    let div = (document.getElementById(`${segmentIndex}-${fieldIndex}`)!) // as HTMLInputElement is also valid
+      div.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        });
+  }
+
   return message ? (
     <div className={classes.container}>
       <Typography
@@ -134,7 +144,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                 {fieldIndex !== 0 && '|'}
                 <span
                   className={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
-                  onClick={() => setSelected([segmentIndex, fieldIndex])}
+                  onClick={() => {setSelected([segmentIndex, fieldIndex]); jumpTo(segmentIndex, fieldIndex);}}
                 >
                   {field}
                 </span>
@@ -163,7 +173,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                   {segment.definition && segment.definition.description ? segment.definition.description : segment.name}
                 </ListSubheader>
                 {(segment.children as any[]).map((field, fieldIndex) => !field ? undefined : (
-                  <div>
+                  <div id={`${segmentIndex}-${fieldIndex}`} key={`${segmentIndex}-${fieldIndex}`}>
                     {field.children ? (
                       <div>
                       <ExpandableListItem
