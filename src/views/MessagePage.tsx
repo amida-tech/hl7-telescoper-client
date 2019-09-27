@@ -87,9 +87,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
-// const useMountEffect = (fun: { (): void; (): void | (() => void | undefined); }) => useEffect(fun, [])
-
 const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
   const { history, match: { params }, fileStore: { getMessage, currentMessage, getFile, currentFile } } = props;
   const { messageIndex, fileId } = params as any;
@@ -105,44 +102,14 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
   const filename = (currentFile && currentFile.filename) || 'Unknown File';
   const message = currentMessage;
 
-
-
-  // const itemRefs = useRef([{}].map(() => createRef<HTMLDivElement>()));
-  // const itemRefs = useRef([...Array(3)].map(() => createRef()));
-  // const itemRefs = createRef<HTMLDivElement[]>()
-
-  // const list: RefObject<RefObject<HTMLDivElement>>[] = []
-  // const refs = list.map((acc, index) => {
-  //   acc[index] = createRef<React.RefObject<HTMLDivElement>>();
-  //   return acc;
-  // }, {});
-
-  // const handleClick = (id: string | number) =>
-  //   refs[id].current.scrollIntoView({
-  //     behavior: 'smooth',
-  //     block: 'start',
-  //   });
-
-
-
-    
-
-  const myRef = createRef<HTMLDivElement>()
-  const scrollToRef = (ref: React.RefObject<HTMLDivElement>) => {
-    if(ref && ref.current)
-      ref.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'end'
-      });
-      // window.scrollTo({
-      //   top: ref.current.offsetTop,
-      //   behavior: 'smooth',
-      // });
-      // window.scrollTo(0, ref.current.offsetTop)
+  const jumpTo = (segmentIndex:number, fieldIndex:number) => {
+    let div = (document.getElementById(`${segmentIndex}-${fieldIndex}`)!) // as HTMLInputElement is also valid
+      div.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        });
   }
-  // useMountEffect(() => scrollToRef(myRef)) // Scroll on mount
-
-
 
   return message ? (
     <div className={classes.container}>
@@ -177,7 +144,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                 {fieldIndex !== 0 && '|'}
                 <span
                   className={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
-                  onClick={() => {setSelected([segmentIndex, fieldIndex]); scrollToRef(myRef)}}
+                  onClick={() => {setSelected([segmentIndex, fieldIndex]); jumpTo(segmentIndex, fieldIndex);}}
                 >
                   {field}
                 </span>
@@ -206,8 +173,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                   {segment.definition && segment.definition.description ? segment.definition.description : segment.name}
                 </ListSubheader>
                 {(segment.children as any[]).map((field, fieldIndex) => !field ? undefined : (
-                  // <div ref={el => (refs && refs.current ? refs.current[fieldIndex] = el : undefined)} key={fieldIndex}>
-                  <div ref={myRef}>
+                  <div id={`${segmentIndex}-${fieldIndex}`} key={`${segmentIndex}-${fieldIndex}`}>
                     {field.children ? (
                       <div>
                       <ExpandableListItem
