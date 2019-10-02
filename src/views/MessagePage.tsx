@@ -46,6 +46,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1.2em',
     lineHeight: '1.3em',
     whiteSpace: 'nowrap',
+    cursor:'default'
   },
   segmentListContainer: {
     gridArea: 'list',
@@ -76,6 +77,7 @@ const useStyles = makeStyles(theme => ({
   },
   selectedField: {
     backgroundColor: 'lightgreen',
+    cursor:'default',
   },
   field: {
     '&:hover': {
