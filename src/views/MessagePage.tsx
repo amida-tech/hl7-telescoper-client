@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Typography, makeStyles, TextField, List, ListSubheader, ListItem, ListItemText } from '@material-ui/core';
 import ExpandableListItem from '../components/ExpandableListItem';
+import PreviousForwardButtons from '../components/PreviousForwardButtons'
 
 import { inject, observer } from 'mobx-react';
 import { FILE_STORE, IFileStore } from '../stores/fileStore';
@@ -105,8 +106,16 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
 
   const filename = (currentFile && currentFile.filename) || 'Unknown File';
   const message = currentMessage;
-  const index = 0
-  
+
+  const messagePage = useCallback(
+    (i: number) => () =>{
+      var index = parseInt(messageIndex) + i
+      index = (index < 0 ? 0 : index)
+      history.push(`/app/files/${fileId}/messages/${index}`)
+    },
+    [history, fileId, messageIndex]
+  );
+
   return message ? (
     <div className={classes.container}>
       <Typography
@@ -120,13 +129,12 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
         placeholder="I.e. PID-5 = ERIC"
         label="Filter"
       />
-      <TextField
-        className={classes.messageSelector}
-        type="number"
+      <PreviousForwardButtons
+        onBack={messagePage(-1)}
         value={message.messageNumWithinFile}
-        label="Message Number"
-        onChange={(event) => history.push(`/app/files/${fileId}/messages/${event.target.value}`)}
-      />
+        onForward={messagePage(1)}
+      >
+      </PreviousForwardButtons>
       <div className={classes.rawMessageContainer}>
         {message.rawMessage.split('\n').filter(segment => !!segment).map((segment, segmentIndex) => (
           <div
