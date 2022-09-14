@@ -26,9 +26,9 @@ export const telescoperApi = {
     if (token) {
       newVal = `Bearer ${token}`;
     } else {
-      newVal = undefined;
+      newVal = '';
     }
-    this.api.defaults.headers.Authorization = newVal;
+    this.api.defaults.headers.common['Authorization'] = newVal;
   },
   async signUp(email: string, username: string, password: string): Promise<{ username: string }> {
     const response = await this.api.post('/api/users/', { email, username, password });
