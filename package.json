@@ -1,17 +1,12 @@
 {
   "name": "hl7-telescoper-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@material-ui/core": "4.1.1",
     "@material-ui/icons": "4.2.0",
-    "@types/jest": "24.0.15",
-    "@types/node": "12.0.8",
-    "@types/react": "16.8.20",
-    "@types/react-dom": "16.8.4",
-    "@types/react-router-dom": "^4.3.4",
-    "axios": "0.19.0",
-    "health-level-seven-parser": "1.2.2",
+    "axios": "0.27.2",
+    "@amida-tech/hl7-parser": "1.2.3",
     "hl7-dictionary": "1.0.1",
     "mobx": "5.10.1",
     "mobx-react": "6.1.1",
@@ -20,6 +15,13 @@
     "react-router-dom": "5.0.1",
     "react-scripts": "3.1.1",
     "typescript": "3.5.2"
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.15",
+    "@types/node": "12.0.8",
+    "@types/react": "16.8.20",
+    "@types/react-dom": "16.8.4",
+    "@types/react-router-dom": "^4.3.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,10 +32,18 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": ["react-app"],
+    "extends": [
+      "react-app"
+    ],
     "rules": {
-      "semi": ["warn", "always"],
-      "comma-dangle": ["warn", "always-multiline"]
+      "semi": [
+        "warn",
+        "always"
+      ],
+      "comma-dangle": [
+        "warn",
+        "disallow"
+      ]
     }
   },
   "browserslist": {

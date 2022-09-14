@@ -1,4 +1,4 @@
-import { Segment } from 'health-level-seven-parser';
+import { Segment } from '@amida-tech/hl7-parser';
 
 export interface HL7File {
   id: string
