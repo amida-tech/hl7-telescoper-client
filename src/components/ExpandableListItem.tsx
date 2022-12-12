@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import {ListItem, ListItemText, ListItemIcon, Collapse, List} from '@material-ui/core';
+import { ListItem, ListItemText, ListItemIcon, Collapse, List } from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 
-import { Field } from 'health-level-seven-parser';
+import { Field } from '@amida-tech/hl7-parser';
 
 const ExpandableListItem: React.FC<{
   field: Field;
@@ -36,14 +36,14 @@ const ExpandableListItem: React.FC<{
         primary={field.value ? field.value : '(empty)'}
         secondary={field.definition && field.definition.description ? field.definition.description : field.name}
       />
-      {open ? <ListItemIcon><ExpandLess/></ListItemIcon> : <ListItemIcon><ExpandMore/></ListItemIcon>}
+      {open ? <ListItemIcon><ExpandLess /></ListItemIcon> : <ListItemIcon><ExpandMore /></ListItemIcon>}
     </ListItem>
     <Collapse in={open} timeout="auto" unmountOnExit>
       <List component="div" disablePadding>
         {(field.children as any[]).map((subfield, subfieldIndex) => !subfield ? undefined : (
           <ListItem button
-             key={`${expandableKey}-${subfieldIndex}`}
-             className={nestedClassName}
+            key={`${expandableKey}-${subfieldIndex}`}
+            className={nestedClassName}
           >
             <ListItemText
               primary={subfield.value ? subfield.value : '(empty)'}
