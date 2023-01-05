@@ -1,14 +1,17 @@
 import React from 'react';
-import { Route, Redirect, Switch, RouteComponentProps } from "react-router-dom";
+import { Routes, Route, Navigate, RouteProps } from 'react-router-dom';
+
+import { IUserStore } from '../stores/userStore';
+
 import { SignUpPage } from './SignUpPage';
 import { LoginPage } from './LoginPage';
 
-export const AuthRoot: React.FC<RouteComponentProps> = ({ match }) => {
+export const AuthRoot: React.FC<RouteProps & { userStore: IUserStore } | any> = (props) => {
   return (
-    <Switch>
-      <Route path={`${match.path}/signup`} component={SignUpPage} />
-      <Route path={`${match.path}/login`} component={LoginPage} />
-      <Redirect to={`${match.path}/login`} />
-    </Switch>
+    <Routes>
+      <Route path="signup" element={<SignUpPage {...props} />} />
+      <Route path="login" element={<LoginPage {...props} />} />
+      <Route path="/auth/*" element={<Navigate to="/auth/login" replace />} />
+    </Routes>
   );
 };

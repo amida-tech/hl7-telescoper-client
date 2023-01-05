@@ -1,9 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, RouteProps } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 
-import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { deepOrange, blueGrey } from '@material-ui/core/colors';
 
 import { stores } from './stores';
@@ -13,7 +12,7 @@ import { AppRoot } from './views/AppRoot';
 
 import './App.css';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: blueGrey,
     secondary: deepOrange,
@@ -31,16 +30,16 @@ const theme = createMuiTheme({
  * * Routing
  * * MUI Theme
  */
-export const App: React.FC = () => {
+export const App: React.FC<RouteProps | any> = (props) => {
   return (
     <Provider {...stores}>
       <Router>
         <ThemeProvider theme={theme}>
-          <Switch>
-            <Route path="/auth" component={AuthRoot} />
-            <Route path="/app" component={AppRoot} />
-            <Redirect to="/app" />
-          </Switch>
+          <Routes>
+            <Route path="/auth/*" element={<AuthRoot {...props} />} />
+            <Route path="/app/*" element={<AppRoot {...props} />} />
+            <Route path="*" element={<Navigate to="/app/files" />} />
+          </Routes>
         </ThemeProvider>
       </Router>
     </Provider>

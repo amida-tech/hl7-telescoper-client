@@ -1,34 +1,41 @@
 {
   "name": "hl7-telescoper-client",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "4.1.1",
-    "@material-ui/icons": "4.2.0",
-    "axios": "0.27.2",
     "@amida-tech/hl7-parser": "1.2.3",
+    "@material-ui/core": "~4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "axios": "1.2.2",
     "hl7-dictionary": "1.0.1",
-    "mobx": "5.10.1",
-    "mobx-react": "6.1.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-router-dom": "5.0.1",
+    "mobx": "6.7.0",
+    "mobx-react": "7.6.0",
+    "react": "~16.8.6",
+    "react-dom": "~16.8.6",
+    "react-router-dom": "6.6.1",
     "react-scripts": "5.0.1",
-    "typescript": "3.9.10"
+    "typescript": "4.9.4"
   },
   "devDependencies": {
-    "@types/jest": "24.0.15",
-    "@types/node": "12.0.8",
+    "@babel/core": "^7.20.7",
+    "@babel/plugin-syntax-flow": "^7.18.6",
+    "@babel/plugin-transform-react-jsx": "^7.20.7",
+    "@types/jest": "29.2.5",
+    "@types/node": "18.11.18",
     "@types/react": "16.8.20",
     "@types/react-dom": "16.8.4",
-    "@types/react-router-dom": "^4.3.4"
+    "@types/react-router-dom": "^5.3.3",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "yarn lint --fix",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

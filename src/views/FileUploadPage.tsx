@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
-import { RouteComponentProps } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 import { Container, Paper, Typography, makeStyles, Grid, Button } from '@material-ui/core';
 import { telescoperApi } from '../services/api';
@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const FileUploadPageImpl: React.FC<RouteComponentProps> = (props) => {
-  const { history } = props;
+const FileUploadPageImpl: React.FC = () => {
+  const nav = useNavigate();
 
   const classes = useStyles();
   const [error, setError] = useState(false);
@@ -27,9 +27,11 @@ const FileUploadPageImpl: React.FC<RouteComponentProps> = (props) => {
     try {
       setError(false);
       await telescoperApi.uploadFile(event.target.files![0]);
-      history.push('/app/files');
+      nav('/app/files');
+      console.log('error?', error);
     } catch {
       setError(true);
+      console.log('error?', error);
     }
   };
 
@@ -41,7 +43,7 @@ const FileUploadPageImpl: React.FC<RouteComponentProps> = (props) => {
           variant="h2"
           className={classes.title}
         >
-         Upload a file
+          Upload a file
         </Typography>
         <Grid
           container
@@ -60,11 +62,10 @@ const FileUploadPageImpl: React.FC<RouteComponentProps> = (props) => {
           choose and upload file
           <input
             type="file"
-            style={{ display: "none" }}
             onChange={(event) => uploadAction(event)}
           />
         </Button>
-        { error && (
+        {error && (
           <Typography variant="body1">
             Error. Try Again.
           </Typography>

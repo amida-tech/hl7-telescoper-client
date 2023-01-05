@@ -54,6 +54,7 @@ export class UserStore implements IUserStore {
   @action.bound
   async login(username: string, password: string) {
     const { token } = await telescoperApi.login(username, password);
+    console.log('token', token);
     this.setToken(token);
   }
 }

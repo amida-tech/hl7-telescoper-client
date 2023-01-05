@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { RouteComponentProps } from 'react-router';
+import { Link, RouteProps, useNavigate } from 'react-router-dom';
 
 import { Container, Paper, Typography, makeStyles, Grid, TextField, Button } from '@material-ui/core';
 import { IUserStore, USER_STORE } from '../stores/userStore';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,9 +18,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> = (props) => {
-  const { userStore, history } = props;
-  const { login } = userStore;
+const LoginPageImpl: React.FC<RouteProps & { userStore: IUserStore }> = (props) => {
+  const { userStore } = props;
+  const nav = useNavigate();
 
   const classes = useStyles();
   const [username, setUsername] = useState('');
@@ -31,9 +30,9 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
   const signUpAction = async () => {
     try {
       setError(false);
-      await login(username, password);
-      history.push('/app');
-    } catch {
+      await userStore.login(username, password);
+      nav('/app/files');
+    } catch (error: any) {
       setError(true);
     }
   };
@@ -73,11 +72,11 @@ const LoginPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> =
         <Button
           fullWidth
           className={classes.button}
-          onClick={signUpAction}
+          onClick={() => signUpAction()}
         >
           sign in
         </Button>
-        { error && (
+        {error && (
           <Typography variant="body1">
             Error. Try Again.
           </Typography>

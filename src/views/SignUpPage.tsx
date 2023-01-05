@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { RouteComponentProps } from 'react-router';
+import { RouteProps, useNavigate, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
 import { Container, Paper, Typography, TextField, makeStyles, Grid, Button } from '@material-ui/core';
 
 import { IUserStore, USER_STORE } from '../stores/userStore';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,9 +20,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // TODO loading state during request
-const SignUpPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> = (props) => {
-  const { userStore, history } = props;
-  const { signUp } = userStore;
+const SignUpPageImpl: React.FC<RouteProps & { userStore: IUserStore }> = (props) => {
+  const nav = useNavigate();
+  const { signUp } = props.userStore;
 
   const classes = useStyles();
   const [email, setEmail] = useState('');
@@ -35,7 +34,7 @@ const SignUpPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> 
     try {
       setError(false);
       await signUp(email, username, password);
-      history.push('/auth/login');
+      nav('/auth/login');
     } catch {
       setError(true);
     }
@@ -88,7 +87,7 @@ const SignUpPageImpl: React.FC<RouteComponentProps & { userStore: IUserStore }> 
         >
           sign up
         </Button>
-        { error && (
+        {error && (
           <Typography variant="body1">
             Error. Try Again.
           </Typography>

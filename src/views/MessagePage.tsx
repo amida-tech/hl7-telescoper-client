@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RouteComponentProps } from 'react-router';
+import { RouteProps, useParams, useNavigate } from 'react-router-dom';
 
 import { Typography, makeStyles, TextField, List, ListSubheader, ListItem, ListItemText } from '@material-ui/core';
 import ExpandableListItem from '../components/ExpandableListItem';
@@ -87,20 +87,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }> = (props) => {
-  const { history, match: { params }, fileStore: { getMessage, currentMessage, getFile, currentFile } } = props;
+const MessagePageImpl: React.FC<RouteProps & { fileStore: IFileStore }> = (props) => {
+  const { fileStore } = props;
+  const params = useParams();
+  const nav = useNavigate();
   const { messageIndex, fileId } = params as any;
 
   const classes = useStyles();
   const [[selectedSegmentIndex, selectedFieldIndex], setSelected] = useState([-1, -1]);
 
   useEffect(() => {
-    getMessage(fileId, parseInt(messageIndex));
-    getFile(fileId);
-  }, [getFile, getMessage, fileId, messageIndex]);
+    fileStore.getMessage(fileId, parseInt(messageIndex));
+    fileStore.getFile(fileId);
+  }, [fileStore, fileId, messageIndex]);
 
-  const filename = (currentFile && currentFile.filename) || 'Unknown File';
-  const message = currentMessage;
+  const filename = (fileStore.currentFile && fileStore.currentFile.filename) || 'Unknown File';
+  const message = fileStore.currentMessage;
   return message ? (
     <div className={classes.container}>
       <Typography
@@ -119,7 +121,7 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
         type="number"
         value={message.messageNumWithinFile}
         label="Message Number"
-        onChange={(event) => history.push(`/app/files/${fileId}/messages/${event.target.value}`)}
+        onChange={(event) => nav(`/app/files/${fileId}/messages/${event.target.value}`)}
       />
       <div className={classes.rawMessageContainer}>
         {message.rawMessage.split('\n').filter(segment => !!segment).map((segment, segmentIndex) => (
@@ -163,17 +165,17 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                   {segment.definition && segment.definition.description ? segment.definition.description : segment.name}
                 </ListSubheader>
                 {(segment.children as any[]).map((field, fieldIndex) => !field ? undefined : (
-                  <div>
+                  <div key={`field-${fieldIndex}`}>
                     {field.children ? (
                       <div>
-                      <ExpandableListItem
-                        field={field}
-                        expandableKey={`parsedField-${segmentIndex}-${fieldIndex}`}
-                        expandableClassName={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
-                        expandableOnClick={() => setSelected([segmentIndex, fieldIndex])}
-                        nestedClassName={[classes.nested, selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field].join(' ')}
-                      >
-                      </ExpandableListItem>
+                        <ExpandableListItem
+                          field={field}
+                          expandableKey={`parsedField-${segmentIndex}-${fieldIndex}`}
+                          expandableClassName={selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field}
+                          expandableOnClick={() => setSelected([segmentIndex, fieldIndex])}
+                          nestedClassName={[classes.nested, selectedSegmentIndex === segmentIndex && selectedFieldIndex === fieldIndex ? classes.selectedField : classes.field].join(' ')}
+                        >
+                        </ExpandableListItem>
                       </div>
                     ) : (
                       <ListItem
@@ -182,8 +184,8 @@ const MessagePageImpl: React.FC<RouteComponentProps & { fileStore: IFileStore }>
                         onClick={() => setSelected([segmentIndex, fieldIndex])}
                       >
                         <ListItemText
-                            primary={field.value ? field.value : '(empty)'}
-                            secondary={field.definition && field.definition.description ? field.definition.description : field.name}
+                          primary={field.value ? field.value : '(empty)'}
+                          secondary={field.definition && field.definition.description ? field.definition.description : field.name}
                         />
                       </ListItem>
                     )}
