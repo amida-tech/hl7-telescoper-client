@@ -6,11 +6,12 @@ import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import { Field } from '@amida-tech/hl7-parser';
 
 const ExpandableListItem: React.FC<{
-  field: Field;
+  field: Field | any;
   expandableKey: string;
   expandableClassName: string;
   expandableOnClick: () => void;
-  nestedClassName: string
+  nestedClassName: string,
+  children: any
 }> = (props) => {
 
   const [open, setOpen] = useState(false);

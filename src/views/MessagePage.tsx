@@ -197,7 +197,19 @@ const MessagePageImpl: React.FC<RouteProps & { fileStore: IFileStore }> = (props
         </List>
       </div>
     </div>
-  ) : null;
+  ) : (
+    <div className={classes.container}>
+      <Typography
+        variant="h4"
+        className={classes.title}
+      >
+        {filename}
+      </Typography>
+      <div className={classes.rawMessageContainer}>
+        No messages available or could be retrieved.
+      </div>
+    </div>
+  );
 };
 
 export const MessagePage = inject(FILE_STORE)(observer(MessagePageImpl));
