@@ -5,7 +5,7 @@
     "@manhydra/hl7-parser": "1.2.4",
     "@material-ui/core": "~4.12.4",
     "@material-ui/icons": "4.11.3",
-    "axios": "1.6.0",
+    "axios": "1.6.1",
     "hl7-dictionary": "1.0.1",
     "mobx": "6.10.2",
     "mobx-react": "9.0.1",
